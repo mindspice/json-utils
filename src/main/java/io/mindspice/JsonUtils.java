@@ -3,10 +3,7 @@ package io.mindspice;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
@@ -22,11 +19,15 @@ public abstract class JsonUtils {
     private static ObjectNode emptyNode;
 
     static {
-        mapper = new ObjectMapper();//.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         readerCache = new ConcurrentHashMap<>(20);
         writerCache = new ConcurrentHashMap<>(20);
         typeRefCache = new ConcurrentHashMap<>(20);
         emptyNode = mapper.createObjectNode();
+    }
+
+    public static void setFailOnUnknownProperties(boolean isFailOn) {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, isFailOn);
     }
 
 
